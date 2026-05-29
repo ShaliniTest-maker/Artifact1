@@ -7,6 +7,11 @@
  *
  * Express is the sole HTTP layer. The listening port is configurable via the
  * PORT environment variable and defaults to 3000.
+ *
+ * GET is the only method exposed on these two paths. Express would otherwise
+ * answer HEAD and OPTIONS implicitly for a GET route, so a method guard runs
+ * first and returns 404 for every non-GET method (HEAD, OPTIONS, POST, ...),
+ * keeping GET the only successful surface and adding no extra endpoint methods.
  */
 
 const express = require('express');
@@ -16,6 +21,18 @@ const app = express();
 
 // Configurable TCP port: honor process.env.PORT, otherwise default to 3000.
 const PORT = process.env.PORT || 3000;
+
+// Restrict both public paths to GET only. Registered before the GET handlers so
+// it runs first: a GET request falls through via next(), while every other
+// method (HEAD, OPTIONS, POST, PUT, DELETE, PATCH, ...) returns 404. This stops
+// Express from implicitly answering HEAD/OPTIONS for the GET routes, so GET is
+// the sole successful method and no extra endpoint surface is exposed.
+app.all(['/', '/good-evening'], (req, res, next) => {
+  if (req.method === 'GET') {
+    return next();
+  }
+  return res.sendStatus(404);
+});
 
 // FR-2: Preserve the original greeting endpoint.
 app.get('/', (req, res) => res.type('text/plain').send('Hello world'));
