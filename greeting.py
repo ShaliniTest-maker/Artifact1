@@ -30,7 +30,7 @@ from datetime import datetime
 # Evening window: 17:00 (5 PM) inclusive to 21:00 (9 PM) exclusive,
 # i.e. hours 17, 18, 19, and 20. This is the researched convention (a
 # defensible midpoint of the "after 5-6 PM until night" usage that stops
-# short of late-night "good night" territory). Adjust these two constants
+# short of late-night territory). Adjust these two constants
 # to change the window in a single place.
 EVENING_START = 17
 EVENING_END = 21
