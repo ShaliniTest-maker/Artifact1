@@ -1,6 +1,6 @@
-# Artifact1      
-vv
-## Usage ffddfdfdsf
+# Artifact1
+
+## Usage
 
 A small, standard-library-only Python 3 feature that says "Good evening".
 
